@@ -15,13 +15,13 @@ int main(int argc, char *argv[]) {
     TodoList myList;
 
     //COMMENT ME OUT EVENTUALLY
-    for(int i = 0; i < argc; i++){
-        cout << "argv[" << i << "] = " << argv[i] << endl;
-    }
+//    for(int i = 0; i < argc; i++){
+//        cout << "argv[" << i << "] = " << argv[i] << endl;
+//    }
     string firstarg = argv[1];
 
     if(firstarg.compare("add")==0){
-        cout << "Doing an add" << endl;
+        cout << "Add:" << endl;
         string date = argv[2];
         string task = argv[3];
         cout << "Date: " << date << " Task: " << task << endl;
@@ -29,21 +29,21 @@ int main(int argc, char *argv[]) {
     }
 
     else if(firstarg.compare("remove")==0){
-        cout << "Doing a remove" << endl;
+//        cout << "Doing a remove" << endl;
         string task = argv[2];
-        cout << "Task: " << task << endl;
+        cout << "Remove task: " << task << endl;
         myList.remove(task);
     }
 
     else if(firstarg.compare("printList")==0){
-        cout << "Doing a print" << endl;
+//        cout << "Doing a print" << endl;
         myList.printTodoList();
     }
 
     else if(firstarg.compare("printDay")==0){
-        cout << "Doing a print just a day" << endl;
+//        cout << "Doing a print just a day" << endl;
         string date = argv[2];
-        cout << "date: " << date << endl;
+//        cout << "Date: " << date << endl;
         myList.printDaysTasks(date);
     }
 
