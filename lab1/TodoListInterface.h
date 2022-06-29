@@ -32,6 +32,9 @@ public:
     *   Prints out all items of a todo list with a particular due date (specified by _duedate)
     */
     virtual void printDaysTasks(string _date) = 0;
+
+    virtual void help() = 0;
+    virtual void clear() = 0;
 };
 
 #endif

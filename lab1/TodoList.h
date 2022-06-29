@@ -7,31 +7,203 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <vector>
 #include "TodoListInterface.h"
 
 using namespace std;
 
 class TodoList: public TodoListInterface {
 public:
+    vector <string> tasks;
     TodoList() {
         cout << "In constructor" << endl;
-    } //in cpp
+        string line;
+        ifstream inFile("TODOList.txt");
+        if(inFile.is_open()){
+            while (getline (inFile, line)){
+//                cout << line << endl;
+                tasks.push_back(line);
+            }
+            inFile.close();
+        }
+        else{
+            cout << "Could not open TODOList.txt" << endl;
+        }
+    }
+
     virtual ~TodoList() {
         cout << "In destructor" << endl;
+        ofstream outfile;
+        outfile.open("TODOList.txt", ofstream::out | ofstream::trunc);
+        for (int i = 0; i < tasks.size(); i++){
+            outfile << tasks[i] << endl;
+        }
+        outfile.close();
     }
-    //in cpp
+
     virtual void add(string _duedate, string _task) {
-        cout << "In add" << endl;
+        cout << "In add: " << "Duedate: " << _duedate << " Task: " << _task << endl;
+//        tasks.push_back(_duedate);
+//        tasks.push_back(_task);
+
+        //NEW WAY THAT DOESN'T ADD DUPLICATE DAYS
+        int shift = 0;
+        vector <string> taskClone;
+//        tasks.push_back("erase me");
+        bool clone = false;
+        //COPY THE THING; CHECK FOR CLONE DATES
+        for (int i = 0; i < tasks.size(); i++){
+            if (clone == true){
+                taskClone.push_back(" * " + _task);
+                taskClone.push_back(tasks[i]);
+                clone = false;
+            }
+            else{
+                taskClone.push_back(tasks[i-shift]);
+            }
+            if (tasks[i] == _duedate){
+                shift = 1;
+                clone = true;
+                cout << "clone detected" << endl;
+            }
+            cout << "shift = " << shift << endl;
+        }
+        //IF IT'S NOT A CLONE JUST PUT IT AT THE END
+        if(shift == 0){
+            tasks.push_back(_duedate);
+            tasks.push_back(" * " + _task);
+        }
+        else{
+            if(tasks.size() != taskClone.size()) {
+                tasks.push_back("erase me");
+                cout << "task size: " << tasks.size() << endl;
+                cout << "clone size: " << taskClone.size() << endl;
+            }
+            for (int i = 0; i < taskClone.size(); i++){
+                tasks[i]=taskClone[i];
+//                cout << "copying " << taskClone[i] << endl;
+            }
+        }
+        /*
+        // *This code was to try and make it so that new items would be stored in
+        // * existing dates.
+        bool match = false;
+        for (int i = 0; i < tasks.size(); i++){
+            if (tasks[i].compare(_duedate)==0){
+                match = true;
+//              vector<string>::iterator it;
+//              it = tasks.begin();
+//              it = tasks.insert(i+1, _task);
+//              tasks.insert(i+1, _task);           // Insert the task under
+                                                    //   the existing day instead of
+                                                    //   at the end.
+                tasks.push_back("empty");
+                vector <string> taskCopy;
+                for (int j = 0; j < tasks.size(); j++){
+                    cout << "Tasks: "tasks.size() << ", " << j << endl;
+                    if (j < i){
+                        taskCopy[j] = tasks[j];
+                    }
+                    if (j==i){
+                        taskCopy[j] = _task;
+                        cout << "Task inserted under day " << _duedate << "." << endl;
+                    }
+                    if (j > i){
+                        taskCopy[j] = tasks[j-1];
+                    }
+                }
+                for (int j = 0; j < tasks.size(); j++){
+                    tasks[j] = taskCopy[j];
+                    }
+                }
+            if(i == tasks.size() && match == false){
+                tasks.push_back("_______");
+                tasks.push_back(_duedate);
+                tasks.push_back("*" + _task);
+                cout << "Task appended" << endl;
+            }
+        } */
     } // = 0;
+
     virtual int remove(string _task) {
-        cout << "int remorve" << endl;
+        vector <string> currentList;
+        cout << "in remove" << endl;
+        ifstream inFile;
+        inFile.open("TODOList.txt");
+        string line;
+        if(inFile.is_open()){
+            while(getline(inFile, line)){
+                currentList.push_back(line);
+            }
+            bool found = false;
+            int deleteID;
+
+            for (int i = 0; i < currentList.size(); i++){
+                cout << currentList[i];
+                string adjust = " * " + _task;
+//              cout << "Matchin' for " << adjust << endl; //COMMENT OUT
+//              cout << "CurrentList size: " << currentList.size() << endl;
+                if (adjust.compare(currentList[i])==0) {
+                    cout << "   <---- ***TASK TO DELETE***";
+                    found = true;
+                    deleteID = i - 1;
+                }
+                cout << endl;
+                cout << "Found: " << found << endl;
+            }
+            if (found == true){
+                tasks.erase(tasks.begin() + deleteID);
+//                tasks.erase(tasks.begin() + deleteID);
+//              cout << "CurrentList size: " << currentList.size() << endl;
+                }
+
+            else{
+                cout << "Task \"" << _task << "\" not found." << endl;
+            }
+        }
+
+        inFile.close();
     } //= 0;
+
     virtual void printTodoList() {
         cout << "in print list" << endl;
-    }//= 0;
-    virtual void printDaysTasks(string _date) {
-        cout << "In pintrdays" << endl;
+
+        cout << "____________TO______________________________" << endl;
+        cout << "________________DO__________________________" << endl;
+        cout << "____________________LIST:___________________" << endl;
+
+        //PRINT IT
+        for (int i = 0; i < tasks.size(); i++){
+            cout << tasks[i] << endl;
+        }
+
+        cout << "____________THAT'S__________________________" << endl;
+        cout << "__________________THE_______________________" << endl;
+        cout << "_______________________LIST.________________" << endl;
+
     } //= 0;
+
+    virtual void printDaysTasks(string _date) {
+        cout << "In print m' day" << endl;
+
+    } //= 0;
+
+    virtual void help() {
+        cout << "************TODO LIST HELP MENU:************" << endl;
+        cout << "Use \"./TODO add <due_date> <task>\" to add tasks." << endl;
+        cout << "Use \"./TODO remove <task>\" to remove tasks." << endl;
+        cout << "Use \"./TODO printDay <due_date>\" to print a day's tasks." << endl;
+        cout << "Use \"./TODO printList\" to print your list." << endl;
+    } //= 0;
+
+    virtual void clear() {
+        int size = tasks.size();
+        for (int i = 0; i < size; i++){
+            //CLEAR ALL ITEMS FROM THE LIST
+            tasks.erase(tasks.begin());
+        }
+    }
 };
 
 #endif //TODO_LIST_H
