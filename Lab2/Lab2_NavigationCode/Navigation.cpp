@@ -8,10 +8,11 @@
 using namespace std;
 
     Navigation::Navigation(){
-        cout << "In navigation constructor..." << endl;
+        cout << endl;
+        cout << "Starting calculation ... " << endl;
     }
     Navigation::~Navigation() {
-        cout << "  ... In destructor." << endl;
+        cout << "  ... Process ended." << endl;
     }
 
     // This function reads in the contents of the file _mapName.
@@ -24,13 +25,13 @@ using namespace std;
 //        //We'll fill these guys as we read from the input
 //        // file: the adjacency matrix & dimension.
     bool Navigation::readNetwork(string _mapName) {
-        cout << "I'm trying to read from file \"" << _mapName << "\"." << endl;
+//        cout << "I'm trying to read from file \"" << _mapName << "\"." << endl;
         int firstLine;
         ifstream inFile;
         inFile.open(_mapName);
 
         inFile >> firstLine;
-        cout << "Vector dimension = " << firstLine << endl; //
+//        cout << "Vector dimension = " << firstLine << endl; //
         numNodes = firstLine;
 
         if(inFile.is_open()){
@@ -56,7 +57,7 @@ using namespace std;
 
                 theCosts.push_back((currentLine));
             }
-            cout << "File read success!" << endl;
+//            cout << "File read success!" << endl;
             inFile.close();
             return true;
         }
@@ -82,7 +83,7 @@ using namespace std;
         n.path.push(_startInd);
 //    (3)   Insert Node n into PQ
         cheapPQ.push(n);
-        
+
 //    (4)   Loop while the top Node in PQ does not contain a path that ends
 //          in the destination
         while (cheapPQ.top().path.back() != _endInd){
@@ -113,13 +114,14 @@ using namespace std;
               }
 //    (8)   Return the path (which is a queue of integers) of the top Node in PQ
         thePath = cheapPQ.top().path;
-        cout << "Optimal path calculated." << endl;
+//        cout << "Optimal path calculated." << endl;
         cheapestCost = cheapPQ.top().cost;
         return thePath;
     }
 
     // prints out to the console the path stored in _path
     void Navigation::printPath(queue<int> _path) {
+        cout << "========================" << endl;
         cout << "Optimal path:" << endl;
         int len = _path.size();
 
@@ -135,4 +137,5 @@ using namespace std;
 
         //print the cost:
         cout << "Cost: " << cheapestCost << endl;
+        cout << "========================" << endl;
     }
