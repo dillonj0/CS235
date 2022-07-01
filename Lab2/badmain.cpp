@@ -21,7 +21,7 @@ int main() {
 //    (3)   Insert Node n into PQ
 //    (4)   Loop while the top Node in PQ does not contain a path that ends
 //          in the destination
-    while ((PQ.top()).back()
+//          //    while ((PQ.top()).back()
 //    {
 //        (5)   Pop the top item off the priority queue and store it in
 //                  current (see programming hint 3)
