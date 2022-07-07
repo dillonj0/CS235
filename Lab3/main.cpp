@@ -20,27 +20,27 @@ int main(int argc, char *argv[]) {
     int numWords;
 
     ////************** PROGRAM SETUP ****************
+    cout << endl;
     if(argv[2]) {
         predictionStartsWith = argv[2];
     } else{
-        cout << endl;
         cout << "*** No startWord argument. Using text file start as default. ***" << endl;
         predictionStartsWith = "";
     }
-    if(argv[3]) {
+    if(argv[2] && argv[3]) {
         numWords = stoi(argv[3]);
     } else{
-        cout << endl;
         cout << "*** No numWords argument. Using default of 100. ***" << endl;
         numWords = 100;
     }
+    cout << "BEGINNING PROCESS... " << endl;
     ////************* END PROGRAM SETUP **************
 
     vector <string> tokens;     // All the words in order
     set <string> unique;        // Only keeps the new words
     map <string, vector <string> >wordMap;
 
-    cout << endl;
+
 
     FileToSetAndVector(fileName, tokens, unique);
 
@@ -153,8 +153,9 @@ void GeneratePredictedWords(int wordCount, map <string, vector <string> > wordMa
         cout << "*** START WORD \"" << startWord << "\" NOT FOUND IN MAP. ***" << endl;
     }
     for (int i = 0; i < wordCount; i++) {
-        cout << wordMap[state] << " ";      /////todo problematic
-        state = wordMap[state];             /////todo problematic
+        int ind = rand() % wordMap[state].size();
+        cout << wordMap[state][ind] << " ";      /////todo problematic
+        state = wordMap[state][ind];             /////todo problematic
     }
     cout << endl;
 }
