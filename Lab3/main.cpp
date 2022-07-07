@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <map>
+#include <time.h>
 using namespace std;
 // Created by Dillon Jensen on 06/JUL/2022
 
@@ -153,6 +154,7 @@ void GeneratePredictedWords(int wordCount, map <string, vector <string> > wordMa
         cout << "*** START WORD \"" << startWord << "\" NOT FOUND IN MAP. ***" << endl;
     }
     for (int i = 0; i < wordCount; i++) {
+        srand (time(NULL)); //We don't want the output to be the same every time.
         int ind = rand() % wordMap[state].size();
         cout << wordMap[state][ind] << " ";      /////todo problematic
         state = wordMap[state][ind];             /////todo problematic
