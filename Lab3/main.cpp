@@ -188,9 +188,6 @@ void GeneratePredictedWords(int wordCount, map <list <string>, vector <string> >
     }
 
     for (int i = 0; i < wordCount; i++) {
-//        srand (time(0)); //We don't want the output to be the same every time.
-        // ^^^^^ RANDOM JUST GETS IT STUCK IN A LOOP AGAIN SO I GUESS WE'LL SETTLE.
-//        cout << wordMap[state].size() << " <<< wordMap size at " << startWord << endl;
         int ind = (rand() + time(NULL)) % wordMap[state].size();
         cout << wordMap[state][ind] << " ";
         state.push_back(wordMap[state][ind]);
