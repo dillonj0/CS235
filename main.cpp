@@ -1,9 +1,10 @@
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
+#include "PathfinderInterface.h"
 #include "Pathfinder.h"
+// g++ -std=c++11 main.cpp Pathfinder.cpp -o Lab4
 
 const int NUM_FILES = 5; // the total number of files to be read from
 
@@ -107,7 +108,7 @@ void parse_instruction(std::string temp, std::ofstream &ofs, Pathfinder* aptr) {
 
 
 //inserts values for x, y, ans z into the given ints based on the coordinates given in coordString
-//returns "" if the string given was a vlaid coordinate, else returns the coordString
+//returns "" if the string given was a valid coordinate, else returns the coordString
 string getCoords(std::string coordString, int &x, int &y, int &z) {
 	stringstream ss;
 	if (coordString.size() != 9) {//coordinate string must contain 9 characters "(x, y, z)"
