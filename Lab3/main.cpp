@@ -55,8 +55,6 @@ int main(int argc, char *argv[]) {
     set <string> unique;        // Only keeps the new words
     map <list <string>, vector <string> >wordMap;
 
-
-
     FileToSetAndVector(fileName, tokens, unique);
 
     WriteSetToFile(fileName, unique);
@@ -176,25 +174,30 @@ void GeneratePredictedWords(int wordCount, map <list <string>, vector <string> >
     list <string> state;
     istringstream in(startWord);
     string input;
-    while(in >> input){
-        state.push_back(input);
-    }
 
-    if (startWord != "" && wordMap.count(state)!= 0) {
-        cout << startWord << " ";
-    }
-    else{
-        cout << "*** START PHRASE \"" << startWord << "\" NOT FOUND IN MAP. ***" << endl;
-    }
-
-    for (int i = 0; i < wordCount; i++) {
-        int ind = (rand() + time(NULL)) % wordMap[state].size();
-        cout << wordMap[state][ind] << " ";
-        state.push_back(wordMap[state][ind]);
-        state.pop_front();
-        if (i % 10 == 0){
-            cout << endl; //line break after each 10 words
+    if (startWord == ""){
+        state.push_back("");
+    } else {
+        while(in >> input){
+            state.push_back(input);
         }
+    }
+
+    if (wordMap.count(state)!= 0) {
+        if (startWord != "") {
+            cout << startWord << " ";
+        }
+        for (int i = 0; i < wordCount; i++) {
+            int ind = (rand() + time(NULL)) % wordMap[state].size();
+            cout << wordMap[state][ind] << " ";
+            state.push_back(wordMap[state][ind]);
+            state.pop_front();
+            if (i % 10 == 0){
+                cout << endl; //line break after each 10 words
+            }
+        }
+    } else {
+        cout << "*** START PHRASE \"" << startWord << "\" NOT FOUND IN MAP. ***" << endl;
     }
     cout << endl;
 }
